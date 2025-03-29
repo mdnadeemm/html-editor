@@ -4,6 +4,11 @@
 
 The HTML Editor is a simple web-based application that allows users to write and edit HTML code in real-time. It features a split-screen layout where users can see their code on one side and a live preview of the rendered HTML on the other. This tool is designed for both beginners and experienced developers who want to quickly test and visualize their HTML code.
 
+## See the Website
+
+Visit the live version [here](https://mdnadeemm.github.io/html-editor/).
+
+
 ## Features
 
 - **Real-time Preview**: See changes instantly as you type in the editor.
@@ -45,3 +50,4 @@ This project is open-source and available under the [MIT License](LICENSE).
 
 - Font Awesome for icons.
 - The community for inspiration and support.
+
