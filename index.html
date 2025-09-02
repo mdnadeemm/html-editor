@@ -20,11 +20,11 @@
         --danger: #e74c3c;
         --border: #e5e7eb;
         --shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-  /* Scrollbar (light) */
-  --scrollbar-bg: #e9eef3;
-  --scrollbar-thumb: #c7d2de;
-  --scrollbar-thumb-hover: #b7c6d6;
-  --scrollbar-corner: #e5e7eb;
+        /* Scrollbar (light) */
+        --scrollbar-bg: #e9eef3;
+        --scrollbar-thumb: #c7d2de;
+        --scrollbar-thumb-hover: #b7c6d6;
+        --scrollbar-corner: #e5e7eb;
       }
       .dark-mode :root,
       .dark-mode {
@@ -38,11 +38,11 @@
         --danger: #ff6b6b;
         --border: #2a3642;
         --shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
-  /* Scrollbar (dark) */
-  --scrollbar-bg: #1f2630;
-  --scrollbar-thumb: #334153;
-  --scrollbar-thumb-hover: #3b4a5e;
-  --scrollbar-corner: #1a2029;
+        /* Scrollbar (dark) */
+        --scrollbar-bg: #1f2630;
+        --scrollbar-thumb: #334153;
+        --scrollbar-thumb-hover: #3b4a5e;
+        --scrollbar-corner: #1a2029;
       }
       * {
         margin: 0;
@@ -136,7 +136,7 @@
         gap: 5px;
       }
 
-  .run-btn {
+      .run-btn {
         background-color: var(--accent);
         color: white;
       }
@@ -161,9 +161,13 @@
         gap: 12px;
         padding: 12px;
       }
-      .hide-sm { display: inline; }
+      .hide-sm {
+        display: inline;
+      }
       @media (max-width: 600px) {
-        .hide-sm { display: none; }
+        .hide-sm {
+          display: none;
+        }
       }
 
       /* Compact header buttons: spacing only; colors come from button classes */
@@ -190,7 +194,7 @@
         flex-direction: column;
         gap: 6px;
         min-width: 200px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
         z-index: 30;
       }
       .dropdown-menu hr {
@@ -220,8 +224,10 @@
         background: #dde6ef;
       }
 
-  /* Muted label utility */
-  .muted-label { color: var(--muted); }
+      /* Muted label utility */
+      .muted-label {
+        color: var(--muted);
+      }
 
       .editor-container {
         flex: 1 1 50%;
@@ -376,8 +382,8 @@
         white-space: pre;
         overflow-y: auto;
         overflow-x: auto;
-  scrollbar-gutter: stable both-edges;
-  overscroll-behavior: contain;
+        scrollbar-gutter: stable both-edges;
+        overscroll-behavior: contain;
       }
 
       #editor:focus {
@@ -430,9 +436,9 @@
         flex: 1;
         background-color: var(--panel-bg);
         position: relative;
-  overflow: auto;
-  scrollbar-gutter: stable both-edges;
-  overscroll-behavior: contain;
+        overflow: auto;
+        scrollbar-gutter: stable both-edges;
+        overscroll-behavior: contain;
       }
       #previewScale {
         width: 100%;
@@ -474,7 +480,7 @@
         gap: 5px;
       }
 
-  /* theme toggle now lives in header controls */
+      /* theme toggle now lives in header controls */
 
       .toast {
         position: fixed;
@@ -532,11 +538,22 @@
         background: #1e1e1e;
         color: #ffffff;
         border-bottom: 1px solid #444;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
       }
-      .dark-mode .editor-container { background-color: #1e1e1e; color: #d4d4d4; }
-      .dark-mode .editor-header { background-color: #252526; color: #9e9e9e; border-bottom: 1px solid #444; }
-      .dark-mode .line-numbers { background-color: #252526; color: #98a2b3; border-right: 1px solid #444; }
+      .dark-mode .editor-container {
+        background-color: #1e1e1e;
+        color: #d4d4d4;
+      }
+      .dark-mode .editor-header {
+        background-color: #252526;
+        color: #9e9e9e;
+        border-bottom: 1px solid #444;
+      }
+      .dark-mode .line-numbers {
+        background-color: #252526;
+        color: #98a2b3;
+        border-right: 1px solid #444;
+      }
 
       .dark-mode .editor-tab.active {
         background-color: #2d2d2d;
@@ -553,26 +570,58 @@
         color: #e0e0e0;
       }
       .dark-mode .preview-container,
-      .dark-mode .preview-viewport { background-color: #1e1e1e; }
+      .dark-mode .preview-viewport {
+        background-color: #1e1e1e;
+      }
 
-  .dark-mode .status-bar { background-color: #1e1e1e; color: #d4d4d4; border-top: 1px solid #444; }
+      .dark-mode .status-bar {
+        background-color: #1e1e1e;
+        color: #d4d4d4;
+        border-top: 1px solid #444;
+      }
 
-  /* Dark mode editor controls */
-  .dark-mode .icon-btn { background: #2a2a2a; border: 1px solid #3a3a3a; color: #ddd; }
-  .dark-mode .icon-btn:hover { background: #333; }
-  .dark-mode .toolbar { background-color: #1f1f1f; border-bottom: 1px solid #333; }
-  .dark-mode .toolbar button { background: #2a2a2a; color: #ddd; border: 1px solid #3a3a3a; }
-  .dark-mode .toolbar button:hover { background: #333; }
-  .dark-mode #editor { background-color: #1e1e1e; color: #d4d4d4; }
+      /* Dark mode editor controls */
+      .dark-mode .icon-btn {
+        background: #2a2a2a;
+        border: 1px solid #3a3a3a;
+        color: #ddd;
+      }
+      .dark-mode .icon-btn:hover {
+        background: #333;
+      }
+      .dark-mode .toolbar {
+        background-color: #1f1f1f;
+        border-bottom: 1px solid #333;
+      }
+      .dark-mode .toolbar button {
+        background: #2a2a2a;
+        color: #ddd;
+        border: 1px solid #3a3a3a;
+      }
+      .dark-mode .toolbar button:hover {
+        background: #333;
+      }
+      .dark-mode #editor {
+        background-color: #1e1e1e;
+        color: #d4d4d4;
+      }
 
       .dark-mode .preview-btn {
         color: #ddd;
         border: 1px solid #555;
       }
 
-  .dark-mode .preview-btn:hover { background-color: #333; }
-  .dark-mode .dropdown-menu { background: #252526; border-color: #444; box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
-  .dark-mode .dropdown-menu hr { background: #3a3a3a; }
+      .dark-mode .preview-btn:hover {
+        background-color: #333;
+      }
+      .dark-mode .dropdown-menu {
+        background: #252526;
+        border-color: #444;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      }
+      .dark-mode .dropdown-menu hr {
+        background: #3a3a3a;
+      }
       .dark-mode .secondary-btn {
         background: #29313a;
         color: #e6eef7;
@@ -642,7 +691,12 @@
         <h1>HTML Editor</h1>
       </div>
       <div class="controls">
-        <button class="run-btn" id="runBtn" title="Run (Ctrl/Cmd+Enter)" aria-label="Run">
+        <button
+          class="run-btn"
+          id="runBtn"
+          title="Run (Ctrl/Cmd+Enter)"
+          aria-label="Run"
+        >
           <i class="fas fa-play"></i>
           <span class="hide-sm">Run</span>
         </button>
@@ -655,33 +709,85 @@
           <i class="fas fa-bolt"></i>
           <span class="hide-sm">Auto-run</span>
         </button>
-        <button class="secondary-btn" id="downloadBtn" title="Download as HTML" aria-label="Download">
+        <button
+          class="secondary-btn"
+          id="downloadBtn"
+          title="Download as HTML"
+          aria-label="Download"
+        >
           <i class="fas fa-download"></i>
           <span class="hide-sm">Download</span>
         </button>
-        <button class="secondary-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+        <button
+          class="secondary-btn"
+          id="themeToggle"
+          title="Toggle theme"
+          aria-label="Toggle theme"
+        >
           <i class="fas fa-moon"></i>
         </button>
         <div class="dropdown">
-          <button class="secondary-btn" id="moreBtn" title="More" aria-haspopup="true" aria-expanded="false">
+          <button
+            class="secondary-btn"
+            id="moreBtn"
+            title="More"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
             <i class="fas fa-ellipsis-v"></i>
           </button>
-          <div id="moreMenu" class="dropdown-menu hidden" role="menu" aria-label="More actions">
-            <button class="secondary-btn" id="uploadBtn" title="Upload HTML" aria-label="Upload HTML file">
+          <div
+            id="moreMenu"
+            class="dropdown-menu hidden"
+            role="menu"
+            aria-label="More actions"
+          >
+            <button
+              class="secondary-btn"
+              id="uploadBtn"
+              title="Upload HTML"
+              aria-label="Upload HTML file"
+            >
               <i class="fas fa-file-upload"></i> Upload
             </button>
-            <label class="secondary-btn dropdown-item" for="fileInput" title="Choose HTML file" aria-label="Choose HTML file" style="cursor: pointer">
+            <label
+              class="secondary-btn dropdown-item"
+              for="fileInput"
+              title="Choose HTML file"
+              aria-label="Choose HTML file"
+              style="cursor: pointer"
+            >
               <span><i class="fas fa-folder-open"></i> Choose</span>
-              <input id="fileInput" type="file" accept=".html,.htm,.txt" class="hidden" />
+              <input
+                id="fileInput"
+                type="file"
+                accept=".html,.htm,.txt"
+                class="hidden"
+              />
             </label>
-            <button class="secondary-btn" id="copyBtn" title="Copy HTML" aria-label="Copy HTML">
+            <button
+              class="secondary-btn"
+              id="copyBtn"
+              title="Copy HTML"
+              aria-label="Copy HTML"
+            >
               <i class="fas fa-copy"></i> Copy
             </button>
             <hr />
-            <button class="secondary-btn" id="resetBtn" title="Reset editor" aria-label="Reset editor">
+            <button
+              class="secondary-btn"
+              id="resetBtn"
+              title="Reset editor"
+              aria-label="Reset editor"
+            >
               <i class="fas fa-redo"></i> Reset
             </button>
-            <button class="secondary-btn" id="helpBtn" title="Help & Shortcuts" aria-label="Help">
+            <button
+              class="secondary-btn"
+              id="helpBtn"
+              title="Help & Shortcuts"
+              aria-label="Help"
+            >
               <i class="fas fa-question-circle"></i> Help
             </button>
           </div>
@@ -873,7 +979,10 @@
             >
               <i class="fas fa-expand"></i>
             </button>
-            <label for="zoomSelect" class="muted-label" style="font-size: 0.85rem"
+            <label
+              for="zoomSelect"
+              class="muted-label"
+              style="font-size: 0.85rem"
               >Zoom:</label
             >
             <select
@@ -936,8 +1045,6 @@
         <span id="counts">0 lines, 0 chars</span>
       </div>
     </div>
-
-    
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
@@ -1061,9 +1168,9 @@
       const runBtn = document.getElementById("runBtn");
       const resetBtn = document.getElementById("resetBtn");
       const downloadBtn = document.getElementById("downloadBtn");
-  const themeToggle = document.getElementById("themeToggle");
-  const moreBtn = document.getElementById("moreBtn");
-  const moreMenu = document.getElementById("moreMenu");
+      const themeToggle = document.getElementById("themeToggle");
+      const moreBtn = document.getElementById("moreBtn");
+      const moreMenu = document.getElementById("moreMenu");
       const lineNumbers = document.getElementById("lineNumbers");
       const memoryStatus = document.getElementById("memoryStatus");
       const refreshPreview = document.getElementById("refreshPreview");
@@ -1566,25 +1673,25 @@
 
         // More dropdown
         const closeMenu = () => {
-          moreMenu.classList.add('hidden');
-          moreBtn.setAttribute('aria-expanded', 'false');
+          moreMenu.classList.add("hidden");
+          moreBtn.setAttribute("aria-expanded", "false");
         };
         const toggleMenu = () => {
-          const open = moreMenu.classList.toggle('hidden');
-          moreBtn.setAttribute('aria-expanded', String(!open));
+          const open = moreMenu.classList.toggle("hidden");
+          moreBtn.setAttribute("aria-expanded", String(!open));
         };
-        moreBtn.addEventListener('click', (e) => {
+        moreBtn.addEventListener("click", (e) => {
           e.stopPropagation();
           toggleMenu();
         });
-        moreMenu.addEventListener('click', (e) => {
+        moreMenu.addEventListener("click", (e) => {
           e.stopPropagation();
         });
-        document.addEventListener('click', (e) => {
-          if (!moreMenu.classList.contains('hidden')) closeMenu();
+        document.addEventListener("click", (e) => {
+          if (!moreMenu.classList.contains("hidden")) closeMenu();
         });
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape') closeMenu();
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") closeMenu();
         });
 
         refreshPreview.addEventListener("click", updatePreview);
@@ -1647,7 +1754,7 @@
             if (!helpOverlay.classList.contains("hidden")) {
               helpOverlay.classList.add("hidden");
             }
-            if (!moreMenu.classList.contains('hidden')) {
+            if (!moreMenu.classList.contains("hidden")) {
               closeMenu();
             }
           }
