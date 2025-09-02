@@ -1,344 +1,781 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HTML Editor</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+      :root {
+        --bg: #f5f7fb;
+        --panel-bg: #ffffff;
+        --text: #2c3e50;
+        --muted: #6b7280;
+        --brand: #3498db;
+        --brand-600: #2980b9;
+        --accent: #27ae60;
+        --danger: #e74c3c;
+        --border: #e5e7eb;
+        --shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  /* Scrollbar (light) */
+  --scrollbar-bg: #e9eef3;
+  --scrollbar-thumb: #c7d2de;
+  --scrollbar-thumb-hover: #b7c6d6;
+  --scrollbar-corner: #e5e7eb;
+      }
+      .dark-mode :root,
+      .dark-mode {
+        --bg: #0f141a;
+        --panel-bg: #151a21;
+        --text: #e6eef7;
+        --muted: #a3adc2;
+        --brand: #3ea8ff;
+        --brand-600: #2688d8;
+        --accent: #2ecc71;
+        --danger: #ff6b6b;
+        --border: #2a3642;
+        --shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  /* Scrollbar (dark) */
+  --scrollbar-bg: #1f2630;
+  --scrollbar-thumb: #334153;
+  --scrollbar-thumb-hover: #3b4a5e;
+  --scrollbar-corner: #1a2029;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
 
-        body {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            background-color: #f5f5f5;
-        }
+      body {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        background: radial-gradient(
+            1200px 600px at 20% -10%,
+            #cfe8ff40,
+            transparent
+          ),
+          radial-gradient(800px 400px at 110% 10%, #ffd1e640, transparent),
+          var(--bg);
+        color: var(--text);
+        scrollbar-gutter: stable both-edges;
+      }
 
-        .header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+      /* Scrollbars (Firefox) */
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg);
+      }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+      /* Scrollbars (WebKit browsers: Chrome, Edge, Safari) */
+      *::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      *::-webkit-scrollbar-track {
+        background: var(--scrollbar-bg);
+        border-radius: 8px;
+      }
+      *::-webkit-scrollbar-thumb {
+        background-color: var(--scrollbar-thumb);
+        border-radius: 8px;
+        border: 2px solid transparent; /* inset look */
+        background-clip: padding-box;
+      }
+      *::-webkit-scrollbar-thumb:hover {
+        background-color: var(--scrollbar-thumb-hover);
+      }
+      *::-webkit-scrollbar-corner {
+        background: var(--scrollbar-corner);
+      }
 
-        .logo i {
-            font-size: 1.5rem;
-        }
+      .header {
+        background: var(--panel-bg);
+        color: var(--text);
+        padding: 10px 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        position: sticky;
+        top: 0;
+        z-index: 20;
+      }
 
-        .controls {
-            display: flex;
-            gap: 10px;
-        }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
 
-        button {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
+      .logo i {
+        font-size: 1.5rem;
+      }
 
-        .run-btn {
-            background-color: #27ae60;
-            color: white;
-        }
+      .controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
 
-        .run-btn:hover {
-            background-color: #2ecc71;
-        }
+      button {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
 
-        .reset-btn {
-            background-color: #e74c3c;
-            color: white;
-        }
+  .run-btn {
+        background-color: var(--accent);
+        color: white;
+      }
 
-        .reset-btn:hover {
-            background-color: #c0392b;
-        }
+      .run-btn:hover {
+        background-color: #2ecc71;
+      }
 
+      .reset-btn {
+        background-color: var(--danger);
+        color: white;
+      }
+
+      .reset-btn:hover {
+        background-color: #c0392b;
+      }
+
+      .container {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+        gap: 12px;
+        padding: 12px;
+      }
+      .hide-sm { display: inline; }
+      @media (max-width: 600px) {
+        .hide-sm { display: none; }
+      }
+
+      /* Compact header buttons: spacing only; colors come from button classes */
+      .header .controls button,
+      .header .controls label.secondary-btn {
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+      }
+
+      /* Dropdown */
+      .dropdown {
+        position: relative;
+      }
+      .dropdown-menu {
+        position: absolute;
+        right: 0;
+        top: 110%;
+        background: var(--panel-bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 200px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        z-index: 30;
+      }
+      .dropdown-menu hr {
+        border: none;
+        height: 1px;
+        background: var(--border);
+        margin: 4px 0;
+      }
+      .dropdown-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .dropdown-menu button,
+      .dropdown-menu label.secondary-btn {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .secondary-btn {
+        background: #e9eef3;
+        color: #2c3e50;
+        border: 1px solid #d0d7de;
+      }
+      .secondary-btn:hover {
+        background: #dde6ef;
+      }
+
+  /* Muted label utility */
+  .muted-label { color: var(--muted); }
+
+      .editor-container {
+        flex: 1 1 50%;
+        min-width: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--panel-bg);
+        color: var(--text);
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+
+      .editor-header {
+        padding: 8px 12px;
+        background-color: #f7f7f9;
+        color: #4b5563;
+        font-size: 0.9rem;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .editor-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .icon-btn {
+        background: #f1f1f4;
+        border: 1px solid #d0d7de;
+        color: #374151;
+        padding: 6px 8px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .icon-btn:hover {
+        background: #e9eef3;
+      }
+      .icon-toggle[aria-pressed="true"] {
+        outline: 2px solid #3498db;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 6px;
+        padding: 8px 10px;
+        background-color: #f7f7f9;
+        border-bottom: 1px solid var(--border);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .toolbar button {
+        background: #f1f1f4;
+        color: #374151;
+        border: 1px solid #d0d7de;
+        padding: 6px 8px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+      }
+
+      .toolbar button:hover {
+        background: #e9eef3;
+      }
+
+      .editor-tabs {
+        display: flex;
+        gap: 10px;
+      }
+
+      .editor-tab {
+        padding: 5px 10px;
+        border-radius: 4px 4px 0 0;
+        cursor: pointer;
+        font-size: 0.8rem;
+        transition: all 0.2s;
+      }
+
+      .editor-tab.active {
+        background-color: #1e1e1e;
+        color: white;
+      }
+
+      .code-container {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+      }
+
+      .divider {
+        width: 8px;
+        background: linear-gradient(180deg, #e9eef3, #dbe5ee);
+        cursor: col-resize;
+        position: relative;
+      }
+      .dark-mode .divider {
+        background: #3a4858;
+      }
+      .dragging * {
+        cursor: col-resize !important;
+        user-select: none !important;
+      }
+      .divider::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 3px;
+        height: 28px;
+        border-radius: 2px;
+        background: #b9c6d3;
+        opacity: 0.8;
+      }
+      .dark-mode .divider::after {
+        background: #5b6a7a;
+      }
+
+      .line-numbers {
+        width: 48px;
+        background-color: #f3f4f6;
+        color: #6b7280;
+        text-align: right;
+        padding: 10px 6px;
+        overflow-y: hidden;
+        font-family: monospace;
+        font-size: 12px; /* fixed size: won't zoom with editor */
+        line-height: 1.5;
+        user-select: none;
+        overflow-x: hidden;
+        border-right: 1px solid var(--border);
+      }
+
+      #editor {
+        flex: 1;
+        padding: 10px;
+        background-color: #ffffff;
+        color: #2c3e50;
+        border: none;
+        resize: none;
+        font-family: "Consolas", "Courier New", monospace;
+        font-size: 14px;
+        line-height: 1.5;
+        tab-size: 4;
+        white-space: pre;
+        overflow-y: auto;
+        overflow-x: auto;
+  scrollbar-gutter: stable both-edges;
+  overscroll-behavior: contain;
+      }
+
+      #editor:focus {
+        outline: none;
+      }
+
+      .preview-container {
+        flex: 1 1 50%;
+        min-width: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        border-left: 1px solid var(--border);
+        background-color: var(--panel-bg);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+
+      .preview-header {
+        padding: 8px 15px;
+        background-color: #f0f0f0;
+        color: #555;
+        font-size: 0.9rem;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .preview-controls {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .preview-btn {
+        background-color: transparent;
+        color: #555;
+        padding: 2px 8px;
+        font-size: 0.8rem;
+        border: 1px solid #ccc;
+      }
+
+      .preview-btn:hover {
+        background-color: #e6e6e6;
+      }
+
+      .preview-viewport {
+        flex: 1;
+        background-color: var(--panel-bg);
+        position: relative;
+  overflow: auto;
+  scrollbar-gutter: stable both-edges;
+  overscroll-behavior: contain;
+      }
+      #previewScale {
+        width: 100%;
+        height: 100%;
+        transform-origin: top left;
+      }
+      #preview {
+        width: 100%;
+        height: 100%;
+        border: none;
+        display: block;
+        background: var(--panel-bg);
+      }
+      .preview-loading {
+        display: none;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .preview-loading.show {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .status-bar {
+        background-color: var(--panel-bg);
+        color: var(--text);
+        padding: 6px 12px;
+        font-size: 0.82rem;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        border-top: 1px solid var(--border);
+      }
+
+      .status-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+  /* theme toggle now lives in header controls */
+
+      .toast {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        background: rgba(44, 62, 80, 0.95);
+        color: #ecf0f1;
+        padding: 10px 14px;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.25s ease;
+        z-index: 1000;
+        pointer-events: none;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      /* Syntax highlighting for the editor */
+      .token.tag {
+        color: #569cd6;
+      }
+      .token.attr-name {
+        color: #9cdcfe;
+      }
+      .token.attr-value {
+        color: #ce9178;
+      }
+      .token.punctuation {
+        color: #d4d4d4;
+      }
+      .token.comment {
+        color: #6a9955;
+      }
+      .token.selector {
+        color: #d7ba7d;
+      }
+      .token.property {
+        color: #9cdcfe;
+      }
+
+      .dark-mode {
+        background-color: #121212;
+        color: #e0e0e0;
+      }
+
+      .dark-mode .header {
+        background: #1e1e1e;
+        color: #ffffff;
+        border-bottom: 1px solid #444;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+      }
+      .dark-mode .editor-container { background-color: #1e1e1e; color: #d4d4d4; }
+      .dark-mode .editor-header { background-color: #252526; color: #9e9e9e; border-bottom: 1px solid #444; }
+      .dark-mode .line-numbers { background-color: #252526; color: #98a2b3; border-right: 1px solid #444; }
+
+      .dark-mode .editor-tab.active {
+        background-color: #2d2d2d;
+      }
+
+      .dark-mode .preview-header {
+        background-color: #1f1f1f;
+        color: #ddd;
+        border-bottom: 1px solid #444;
+      }
+
+      .dark-mode #preview {
+        background-color: #1a1a1a;
+        color: #e0e0e0;
+      }
+      .dark-mode .preview-container,
+      .dark-mode .preview-viewport { background-color: #1e1e1e; }
+
+  .dark-mode .status-bar { background-color: #1e1e1e; color: #d4d4d4; border-top: 1px solid #444; }
+
+  /* Dark mode editor controls */
+  .dark-mode .icon-btn { background: #2a2a2a; border: 1px solid #3a3a3a; color: #ddd; }
+  .dark-mode .icon-btn:hover { background: #333; }
+  .dark-mode .toolbar { background-color: #1f1f1f; border-bottom: 1px solid #333; }
+  .dark-mode .toolbar button { background: #2a2a2a; color: #ddd; border: 1px solid #3a3a3a; }
+  .dark-mode .toolbar button:hover { background: #333; }
+  .dark-mode #editor { background-color: #1e1e1e; color: #d4d4d4; }
+
+      .dark-mode .preview-btn {
+        color: #ddd;
+        border: 1px solid #555;
+      }
+
+  .dark-mode .preview-btn:hover { background-color: #333; }
+  .dark-mode .dropdown-menu { background: #252526; border-color: #444; box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
+  .dark-mode .dropdown-menu hr { background: #3a3a3a; }
+      .dark-mode .secondary-btn {
+        background: #29313a;
+        color: #e6eef7;
+        border-color: #3b4653;
+      }
+      .dark-mode .secondary-btn:hover {
+        background: #313b46;
+      }
+
+      /* Focus styles */
+      button:focus-visible,
+      select:focus-visible,
+      .preview-btn:focus-visible {
+        outline: 2px solid var(--brand);
+        outline-offset: 2px;
+      }
+
+      /* Collapsed panels */
+      .editor-collapsed .editor-container {
+        display: none;
+      }
+      .preview-collapsed .preview-container {
+        display: none;
+      }
+      .editor-collapsed #divider,
+      .preview-collapsed #divider {
+        display: none;
+      }
+      /* Expand remaining panel to full */
+      .editor-collapsed .preview-container {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+      .preview-collapsed .editor-container {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+
+      @media (max-width: 768px) {
         .container {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
+          flex-direction: column;
         }
-
-        .editor-container {
-            width: 50%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            background-color: #1e1e1e;
-            color: #d4d4d4;
-            position: relative;
-        }
-
-        .editor-header {
-            padding: 8px 15px;
-            background-color: #252526;
-            color: #9e9e9e;
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid #444;
-        }
-
-        .editor-tabs {
-            display: flex;
-            gap: 10px;
-        }
-
-        .editor-tab {
-            padding: 5px 10px;
-            border-radius: 4px 4px 0 0;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.2s;
-        }
-
-        .editor-tab.active {
-            background-color: #1e1e1e;
-            color: white;
-        }
-
-        .code-container {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        .line-numbers {
-            width: 40px;
-            background-color: #252526;
-            color: #858585;
-            text-align: right;
-            padding: 10px 5px;
-            overflow-y: hidden;
-            font-family: monospace;
-            line-height: 1.5;
-            user-select: none;
-            overflow-x: hidden;
-            border-right: 1px solid #444;
-        }
-
-        #editor {
-            flex: 1;
-            padding: 10px;
-            background-color: #1e1e1e;
-            color: #d4d4d4;
-            border: none;
-            resize: none;
-            font-family: 'Consolas', 'Courier New', monospace;
-            line-height: 1.5;
-            tab-size: 4;
-            white-space: pre;
-            overflow-y: auto;
-            overflow-x: auto;
-        }
-
-        #editor:focus {
-            outline: none;
-        }
-
+        .editor-container,
         .preview-container {
-            width: 50%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            border-left: 1px solid #ddd;
-            background-color: white;
+          width: 100%;
+          height: 50%;
         }
-
-        .preview-header {
-            padding: 8px 15px;
-            background-color: #f0f0f0;
-            color: #555;
-            font-size: 0.9rem;
-            border-bottom: 1px solid #ddd;
-            display: flex;
-            justify-content: space-between;
+        .divider {
+          height: 8px;
+          width: 100%;
+          cursor: row-resize;
         }
-
-        .preview-controls {
-            display: flex;
-            gap: 10px;
-        }
-
-        .preview-btn {
-            background-color: transparent;
-            color: #555;
-            padding: 2px 8px;
-            font-size: 0.8rem;
-            border: 1px solid #ccc;
-        }
-
-        .preview-btn:hover {
-            background-color: #e6e6e6;
-        }
-
-        #preview {
-            flex: 1;
-            background-color: white;
-            border: none;
-            overflow-y: auto;
-        }
-
-        .status-bar {
-            background-color: #2c3e50;
-            color: #ecf0f1;
-            padding: 5px 15px;
-            font-size: 0.8rem;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .status-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
         .theme-toggle {
-            background-color: #3498db;
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 4px;
-            position: absolute;
-            right: 10px;
-            top: 50px;
-            z-index: 10;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+          top: auto;
+          bottom: 65px;
+          right: 10px;
         }
-
-        .theme-toggle:hover {
-            background-color: #2980b9;
-        }
-
-        /* Syntax highlighting for the editor */
-        .token.tag {
-            color: #569cd6;
-        }
-        .token.attr-name {
-            color: #9cdcfe;
-        }
-        .token.attr-value {
-            color: #ce9178;
-        }
-        .token.punctuation {
-            color: #d4d4d4;
-        }
-        .token.comment {
-            color: #6a9955;
-        }
-        .token.selector {
-            color: #d7ba7d;
-        }
-        .token.property {
-            color: #9cdcfe;
-        }
-
-        .dark-mode {
-            background-color: #121212;
-            color: #e0e0e0;
-        }
-
-        .dark-mode .editor-container,
-        .dark-mode .editor-header,
-        .dark-mode .line-numbers {
-            background-color: #252526;
-        }
-
-        .dark-mode .editor-tab.active {
-            background-color: #2d2d2d;
-        }
-
-        .dark-mode .preview-header {
-            background-color: #333;
-            color: #ddd;
-            border-bottom: 1px solid #444;
-        }
-
-        .dark-mode #preview {
-            background-color: #1a1a1a;
-            color: #e0e0e0;
-        }
-
-        .dark-mode .status-bar {
-            background-color: #1a1a1a;
-        }
-
-        .dark-mode .preview-btn {
-            color: #ddd;
-            border: 1px solid #555;
-        }
-
-        .dark-mode .preview-btn:hover {
-            background-color: #333;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-            .editor-container, .preview-container {
-                width: 100%;
-                height: 50%;
-            }
-            .theme-toggle {
-                top: auto;
-                bottom: 65px;
-                right: 10px;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="header">
-        <div class="logo">
-            <i class="fas fa-code"></i>
-            <h1>HTML Editor</h1>
-        </div>
-        <div class="controls">
-            <button class="run-btn" id="runBtn">
-                <i class="fas fa-play"></i> Run
+      <div class="logo">
+        <i class="fas fa-code"></i>
+        <h1>HTML Editor</h1>
+      </div>
+      <div class="controls">
+        <button class="run-btn" id="runBtn" title="Run (Ctrl/Cmd+Enter)" aria-label="Run">
+          <i class="fas fa-play"></i>
+          <span class="hide-sm">Run</span>
+        </button>
+        <button
+          class="secondary-btn"
+          id="autoRunToggle"
+          aria-pressed="true"
+          title="Toggle Auto-run Preview"
+        >
+          <i class="fas fa-bolt"></i>
+          <span class="hide-sm">Auto-run</span>
+        </button>
+        <button class="secondary-btn" id="downloadBtn" title="Download as HTML" aria-label="Download">
+          <i class="fas fa-download"></i>
+          <span class="hide-sm">Download</span>
+        </button>
+        <button class="secondary-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+          <i class="fas fa-moon"></i>
+        </button>
+        <div class="dropdown">
+          <button class="secondary-btn" id="moreBtn" title="More" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v"></i>
+          </button>
+          <div id="moreMenu" class="dropdown-menu hidden" role="menu" aria-label="More actions">
+            <button class="secondary-btn" id="uploadBtn" title="Upload HTML" aria-label="Upload HTML file">
+              <i class="fas fa-file-upload"></i> Upload
             </button>
-            <button class="reset-btn" id="resetBtn">
-                <i class="fas fa-redo"></i> Reset
+            <label class="secondary-btn dropdown-item" for="fileInput" title="Choose HTML file" aria-label="Choose HTML file" style="cursor: pointer">
+              <span><i class="fas fa-folder-open"></i> Choose</span>
+              <input id="fileInput" type="file" accept=".html,.htm,.txt" class="hidden" />
+            </label>
+            <button class="secondary-btn" id="copyBtn" title="Copy HTML" aria-label="Copy HTML">
+              <i class="fas fa-copy"></i> Copy
             </button>
+            <hr />
+            <button class="secondary-btn" id="resetBtn" title="Reset editor" aria-label="Reset editor">
+              <i class="fas fa-redo"></i> Reset
+            </button>
+            <button class="secondary-btn" id="helpBtn" title="Help & Shortcuts" aria-label="Help">
+              <i class="fas fa-question-circle"></i> Help
+            </button>
+          </div>
         </div>
+      </div>
     </div>
 
     <div class="container">
-        <div class="editor-container">
-            <div class="editor-header">
-                <div class="editor-tabs">
-                    <div class="editor-tab active">index.html</div>
-                </div>
-            </div>
-            <div class="code-container">
-                <div class="line-numbers" id="lineNumbers">1</div>
-                <textarea id="editor" spellcheck="false">&lt;!DOCTYPE html&gt;
+      <div class="editor-container">
+        <div class="editor-header">
+          <div class="editor-tabs">
+            <div class="editor-tab active">index.html</div>
+          </div>
+          <div class="editor-actions">
+            <button
+              id="fontDec"
+              class="icon-btn"
+              aria-label="Decrease font size"
+              title="Decrease font size (Ctrl/Cmd -)"
+            >
+              <i class="fas fa-minus"></i>
+            </button>
+            <button
+              id="fontInc"
+              class="icon-btn"
+              aria-label="Increase font size"
+              title="Increase font size (Ctrl/Cmd +)"
+            >
+              <i class="fas fa-plus"></i>
+            </button>
+            <button
+              id="wrapToggle"
+              class="icon-btn icon-toggle"
+              aria-pressed="false"
+              title="Toggle word wrap"
+            >
+              <i class="fas fa-align-left"></i> Wrap
+            </button>
+            <button
+              id="lineNumToggle"
+              class="icon-btn icon-toggle"
+              aria-pressed="true"
+              title="Toggle line numbers"
+            >
+              <i class="fas fa-list-ol"></i> Lines
+            </button>
+            <button
+              id="centerSplitEditor"
+              class="icon-btn"
+              aria-label="Center split"
+              title="Center split"
+            >
+              <i class="fas fa-columns"></i>
+            </button>
+            <button
+              id="collapseEditor"
+              class="icon-btn"
+              aria-label="Collapse editor"
+              title="Collapse editor"
+            >
+              <i class="fas fa-chevron-left"></i>
+            </button>
+          </div>
+        </div>
+        <div class="toolbar" id="toolbar">
+          <button type="button" data-cmd="bold" title="Bold">
+            <i class="fas fa-bold"></i>
+          </button>
+          <button type="button" data-cmd="italic" title="Italic">
+            <i class="fas fa-italic"></i>
+          </button>
+          <button type="button" data-cmd="h1" title="Heading 1">H1</button>
+          <button type="button" data-cmd="h2" title="Heading 2">H2</button>
+          <button type="button" data-cmd="p" title="Paragraph">P</button>
+          <button type="button" data-cmd="link" title="Insert Link">
+            <i class="fas fa-link"></i>
+          </button>
+          <button type="button" data-cmd="ul" title="Bulleted List">
+            <i class="fas fa-list-ul"></i>
+          </button>
+          <button type="button" data-cmd="ol" title="Numbered List">
+            <i class="fas fa-list-ol"></i>
+          </button>
+          <button type="button" data-cmd="img" title="Insert Image">
+            <i class="fas fa-image"></i>
+          </button>
+          <button type="button" data-cmd="code" title="Inline Code">
+            <i class="fas fa-code"></i>
+          </button>
+        </div>
+        <div class="code-container">
+          <div class="line-numbers" id="lineNumbers">1</div>
+          <textarea id="editor" spellcheck="false">
+&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
     &lt;title&gt;My Page&lt;/title&gt;
@@ -404,56 +841,268 @@
         &lt;/button&gt;
     &lt;/div&gt;
 &lt;/body&gt;
-&lt;/html&gt;</textarea>
-            </div>
+&lt;/html&gt;</textarea
+          >
         </div>
+      </div>
 
-        <div class="preview-container">
-            <div class="preview-header">
-                <span>Preview</span>
-                <div class="preview-controls">
-                    <button class="preview-btn" id="refreshPreview" title="Refresh Preview">
-                        <i class="fas fa-sync-alt"></i>
-                    </button>
-                    <button class="preview-btn" id="fullscreenPreview" title="Fullscreen">
-                        <i class="fas fa-expand"></i>
-                    </button>
-                </div>
-            </div>
-            <iframe id="preview" frameborder="0"></iframe>
+      <div
+        class="divider"
+        id="divider"
+        aria-label="Resize panels"
+        title="Drag to resize"
+      ></div>
+
+      <div class="preview-container">
+        <div class="preview-header">
+          <span>Preview</span>
+          <div class="preview-controls">
+            <button
+              class="preview-btn"
+              id="refreshPreview"
+              title="Refresh Preview"
+              aria-label="Refresh Preview"
+            >
+              <i class="fas fa-sync-alt"></i>
+            </button>
+            <button
+              class="preview-btn"
+              id="fullscreenPreview"
+              title="Fullscreen"
+              aria-label="Fullscreen preview"
+            >
+              <i class="fas fa-expand"></i>
+            </button>
+            <label for="zoomSelect" class="muted-label" style="font-size: 0.85rem"
+              >Zoom:</label
+            >
+            <select
+              id="zoomSelect"
+              class="preview-btn"
+              aria-label="Preview Zoom"
+              title="Preview Zoom"
+            >
+              <option value="0.75">75%</option>
+              <option value="0.9">90%</option>
+              <option value="1" selected>100%</option>
+              <option value="1.1">110%</option>
+              <option value="1.25">125%</option>
+              <option value="1.5">150%</option>
+            </select>
+            <button
+              class="preview-btn"
+              id="centerSplit"
+              title="Center split"
+              aria-label="Center split"
+            >
+              <i class="fas fa-columns"></i>
+            </button>
+            <span id="previewLoading" class="preview-loading"
+              ><i class="fas fa-circle-notch fa-spin"></i> Rendering…</span
+            >
+            <button
+              class="preview-btn"
+              id="collapsePreview"
+              title="Collapse preview"
+              aria-label="Collapse preview"
+            >
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
         </div>
+        <div class="preview-viewport">
+          <div id="previewScale">
+            <iframe id="preview" frameborder="0"></iframe>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="status-bar">
-        <div class="status-item">
-            <i class="fas fa-code"></i>
-            <span>Advanced HTML Editor</span>
-        </div>
-        <div class="status-item">
-            <i class="fas fa-memory"></i>
-            <span id="memoryStatus">Ready</span>
-        </div>
+      <div class="status-item">
+        <i class="fas fa-code"></i>
+        <span>Advanced HTML Editor</span>
+      </div>
+      <div class="status-item">
+        <i class="fas fa-memory"></i>
+        <span id="memoryStatus">Ready</span>
+      </div>
+      <div class="status-item">
+        <i class="fas fa-i-cursor"></i>
+        <span id="cursorPos">Ln 1, Col 1</span>
+      </div>
+      <div class="status-item">
+        <i class="fas fa-hashtag"></i>
+        <span id="counts">0 lines, 0 chars</span>
+      </div>
     </div>
 
-    <button class="theme-toggle" id="themeToggle">
-        <i class="fas fa-moon"></i> Dark Mode
-    </button>
+    
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <!-- Help Modal -->
+    <div
+      id="helpOverlay"
+      class="hidden"
+      style="
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 1100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="helpTitle"
+        style="
+          width: min(680px, 92vw);
+          max-height: 85vh;
+          overflow: auto;
+          background: var(--panel-bg);
+          color: var(--text);
+          border-radius: 12px;
+          box-shadow: var(--shadow);
+          padding: 20px;
+        "
+      >
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+          "
+        >
+          <h2 id="helpTitle" style="font-size: 1.2rem">Help & Shortcuts</h2>
+          <button id="helpClose" class="secondary-btn" aria-label="Close help">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            font-size: 0.95rem;
+          "
+        >
+          <div>
+            <strong>Editing</strong>
+            <ul
+              style="
+                margin: 8px 0 0 18px;
+                line-height: 1.6;
+                color: var(--muted);
+              "
+            >
+              <li>Tab / Shift+Tab — indent / outdent</li>
+              <li>Ctrl/Cmd + / - — change font size</li>
+              <li>Wrap toggle — word wrap on/off</li>
+              <li>Lines toggle — line numbers on/off</li>
+            </ul>
+          </div>
+          <div>
+            <strong>Preview</strong>
+            <ul
+              style="
+                margin: 8px 0 0 18px;
+                line-height: 1.6;
+                color: var(--muted);
+              "
+            >
+              <li>Ctrl/Cmd+Enter — run/refresh</li>
+              <li>Zoom — scale preview</li>
+              <li>Auto-run — toggle live update</li>
+            </ul>
+          </div>
+          <div>
+            <strong>Files</strong>
+            <ul
+              style="
+                margin: 8px 0 0 18px;
+                line-height: 1.6;
+                color: var(--muted);
+              "
+            >
+              <li>Drag & drop an HTML file onto the editor</li>
+              <li>Upload/Choose to load from disk</li>
+              <li>Download to save HTML</li>
+              <li>Copy to clipboard</li>
+            </ul>
+          </div>
+          <div>
+            <strong>Layout</strong>
+            <ul
+              style="
+                margin: 8px 0 0 18px;
+                line-height: 1.6;
+                color: var(--muted);
+              "
+            >
+              <li>Drag divider to resize panels</li>
+              <li>Center split to reset width</li>
+              <li>Collapse Editor / Preview</li>
+              <li>Theme persists across sessions</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script>
-        // DOM elements
-        const editor = document.getElementById('editor');
-        const preview = document.getElementById('preview');
-        const runBtn = document.getElementById('runBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const themeToggle = document.getElementById('themeToggle');
-        const lineNumbers = document.getElementById('lineNumbers');
-        const memoryStatus = document.getElementById('memoryStatus');
-        const refreshPreview = document.getElementById('refreshPreview');
-        const fullscreenPreview = document.getElementById('fullscreenPreview');
-        const body = document.body;
+      // DOM elements
+      const editor = document.getElementById("editor");
+      const preview = document.getElementById("preview");
+      const runBtn = document.getElementById("runBtn");
+      const resetBtn = document.getElementById("resetBtn");
+      const downloadBtn = document.getElementById("downloadBtn");
+  const themeToggle = document.getElementById("themeToggle");
+  const moreBtn = document.getElementById("moreBtn");
+  const moreMenu = document.getElementById("moreMenu");
+      const lineNumbers = document.getElementById("lineNumbers");
+      const memoryStatus = document.getElementById("memoryStatus");
+      const refreshPreview = document.getElementById("refreshPreview");
+      const fullscreenPreview = document.getElementById("fullscreenPreview");
+      const toolbar = document.getElementById("toolbar");
+      const divider = document.getElementById("divider");
+      const cursorPos = document.getElementById("cursorPos");
+      const counts = document.getElementById("counts");
+      const uploadBtn = document.getElementById("uploadBtn");
+      const fileInput = document.getElementById("fileInput");
+      const copyBtn = document.getElementById("copyBtn");
+      const fontInc = document.getElementById("fontInc");
+      const fontDec = document.getElementById("fontDec");
+      const wrapToggle = document.getElementById("wrapToggle");
+      const lineNumToggle = document.getElementById("lineNumToggle");
+      const zoomSelect = document.getElementById("zoomSelect");
+      const autoRunToggle = document.getElementById("autoRunToggle");
+      const centerSplit = document.getElementById("centerSplit");
+      const centerSplitEditor = document.getElementById("centerSplitEditor");
+      const collapseEditor = document.getElementById("collapseEditor");
+      const collapsePreview = document.getElementById("collapsePreview");
+      const previewLoading = document.getElementById("previewLoading");
+      const helpBtn = document.getElementById("helpBtn");
+      const helpOverlay = document.getElementById("helpOverlay");
+      const helpClose = document.getElementById("helpClose");
+      const toast = document.getElementById("toast");
+      const body = document.body;
+      const STORAGE_KEY = "html-editor-content-v1";
+      const THEME_KEY = "html-editor-theme";
+      const WRAP_KEY = "html-editor-wrap";
+      const LNUM_KEY = "html-editor-linenumbers";
+      const FONT_KEY = "html-editor-fontsize";
+      const SCALE_KEY = "html-editor-scale";
+      const SPLIT_KEY = "html-editor-split";
+      const AUTORUN_KEY = "html-editor-autorun";
+      const COLLAPSE_KEY = "html-editor-collapsed";
 
-        // Default template
-        const defaultTemplate = `<!DOCTYPE html>
+      // Default template
+      const defaultTemplate = `<!DOCTYPE html>
 <html>
 <head>
     <title>My Page</title>
@@ -519,87 +1168,702 @@
         </button>
     </div>
 </body>
-</html>`
-        // Update line numbers
-        function updateLineNumbers() {
-            const lines = editor.value.split('\n');
-            let lineNumbersHTML = '';
-            for (let i = 0; i < lines.length; i++) {
-                lineNumbersHTML += (i + 1) + '<br>';
+</html>`;
+      // Small helpers
+      const debounce = (fn, wait = 300) => {
+        let t;
+        return (...args) => {
+          clearTimeout(t);
+          t = setTimeout(() => fn.apply(null, args), wait);
+        };
+      };
+
+      function getSelectionInfo() {
+        const start = editor.selectionStart;
+        const before = editor.value.slice(0, start);
+        const line = (before.match(/\n/g) || []).length + 1;
+        const col = start - (before.lastIndexOf("\n") + 1);
+        return { line, col };
+      }
+
+      function updateCounts() {
+        const text = editor.value;
+        const lines = text.split("\n").length;
+        const chars = text.length;
+        counts.textContent = `${lines} lines, ${chars} chars`;
+        const { line, col } = getSelectionInfo();
+        cursorPos.textContent = `Ln ${line}, Col ${col + 1}`;
+      }
+
+      // Update line numbers
+      function updateLineNumbers() {
+        const lines = editor.value.split("\n");
+        let lineNumbersHTML = "";
+        for (let i = 0; i < lines.length; i++) {
+          lineNumbersHTML += i + 1 + "<br>";
+        }
+        lineNumbers.innerHTML = lineNumbersHTML;
+      }
+
+      // Update preview
+      function updatePreview() {
+        const html = editor.value;
+        previewLoading.classList.add("show");
+        preview.srcdoc = html;
+        memoryStatus.textContent = "Running";
+        // finalized on iframe load
+      }
+      let autoRun = true;
+      const debouncedUpdatePreview = debounce(() => {
+        if (autoRun) updatePreview();
+      }, 250);
+
+      preview.addEventListener("load", () => {
+        previewLoading.classList.remove("show");
+        memoryStatus.textContent = "Ready";
+      });
+
+      function syncLineMetrics() {
+        const cs = window.getComputedStyle(editor);
+        let lh = cs.lineHeight;
+        let fs = parseFloat(cs.fontSize) || 14;
+        let linePx;
+        if (lh === "normal") {
+          linePx = Math.round(fs * 1.5);
+        } else if (lh.endsWith("px")) {
+          linePx = parseFloat(lh);
+        } else {
+          // number multiplier
+          const mult = parseFloat(lh) || 1.5;
+          linePx = Math.round(fs * mult);
+        }
+        lineNumbers.style.lineHeight = linePx + "px";
+        // align paddings to keep first line aligned
+        lineNumbers.style.paddingTop = cs.paddingTop;
+        lineNumbers.style.paddingBottom = cs.paddingBottom;
+      }
+
+      function saveToLocal() {
+        try {
+          localStorage.setItem(STORAGE_KEY, editor.value);
+        } catch (e) {
+          /* ignore quota errors */
+        }
+      }
+
+      function downloadHTML() {
+        const blob = new Blob([editor.value], {
+          type: "text/html;charset=utf-8",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "index.html";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast("Downloaded index.html");
+      }
+
+      function wrapSelection(startTag, endTag = null) {
+        endTag = endTag ?? startTag.replace("<", "</");
+        const s = editor.selectionStart;
+        const e = editor.selectionEnd;
+        const val = editor.value;
+        const before = val.slice(0, s);
+        const sel = val.slice(s, e);
+        const after = val.slice(e);
+        const wrapped = `${startTag}${sel}${endTag}`;
+        editor.value = before + wrapped + after;
+        editor.selectionStart = before.length + startTag.length;
+        editor.selectionEnd = before.length + startTag.length + sel.length;
+        updateLineNumbers();
+        updateCounts();
+        debouncedUpdatePreview();
+        saveToLocal();
+        editor.focus();
+      }
+
+      function listify(ordered = false) {
+        const s = editor.selectionStart;
+        const e = editor.selectionEnd;
+        const val = editor.value;
+        // Expand selection to whole lines
+        const lineStart = val.lastIndexOf("\n", s - 1) + 1;
+        const nextNL = val.indexOf("\n", e);
+        const lineEnd = nextNL === -1 ? val.length : nextNL;
+        const before = val.slice(0, lineStart);
+        const block = val.slice(lineStart, lineEnd);
+        const after = val.slice(lineEnd);
+
+        const rawLines = block.split("\n");
+        const items = rawLines.map((l) => l.trim()).filter((l) => l.length > 0);
+        const listTag = ordered ? "ol" : "ul";
+
+        let result = "";
+        if (items.length === 0) {
+          // No content selected or only whitespace — insert a starter list
+          result = `<${listTag}>\n  <li></li>\n</${listTag}>`;
+          editor.value = before + result + after;
+          const abs = before.length;
+          const liOpenIdx = result.indexOf("<li>");
+          const caretPos = abs + liOpenIdx + 4; // inside first <li>|</li>
+          editor.selectionStart = editor.selectionEnd = caretPos;
+        } else {
+          const li = items.map((l) => `  <li>${l}</li>`).join("\n");
+          result = `<${listTag}>\n${li}\n</${listTag}>`;
+          editor.value = before + result + after;
+          const abs = before.length;
+          const firstLiIdx = result.indexOf("<li>");
+          const startPos = firstLiIdx >= 0 ? abs + firstLiIdx + 4 : abs;
+          const firstItemLen = items[0]?.length || 0;
+          editor.selectionStart = startPos;
+          editor.selectionEnd = startPos + firstItemLen;
+        }
+
+        updateLineNumbers();
+        updateCounts();
+        debouncedUpdatePreview();
+        saveToLocal();
+        editor.focus();
+      }
+
+      function insertImage() {
+        const url = prompt("Image URL");
+        if (!url) return;
+        const alt = prompt("Alt text (optional)") || "";
+        const s = editor.selectionStart;
+        const val = editor.value;
+        const before = val.slice(0, s);
+        const after = val.slice(s);
+        const tag = `<img src="${url}" alt="${alt}">`;
+        editor.value = before + tag + after;
+        editor.selectionStart = editor.selectionEnd =
+          before.length + tag.length;
+        updateLineNumbers();
+        updateCounts();
+        debouncedUpdatePreview();
+        saveToLocal();
+        editor.focus();
+      }
+
+      function handleToolbar(cmd) {
+        switch (cmd) {
+          case "bold":
+            return wrapSelection("<strong>", "</strong>");
+          case "italic":
+            return wrapSelection("<em>", "</em>");
+          case "h1":
+            return wrapSelection("<h1>", "</h1>");
+          case "h2":
+            return wrapSelection("<h2>", "</h2>");
+          case "p":
+            return wrapSelection("<p>", "</p>");
+          case "link": {
+            const href = prompt("Enter URL");
+            if (!href) return;
+            return wrapSelection(
+              `<a href="${href}" target="_blank" rel="noopener">`,
+              "</a>"
+            );
+          }
+          case "ul":
+            return listify(false);
+          case "ol":
+            return listify(true);
+          case "img":
+            return insertImage();
+          case "code":
+            return wrapSelection("<code>", "</code>");
+        }
+      }
+
+      function setFontSize(delta) {
+        const style = window.getComputedStyle(editor);
+        const current = parseFloat(style.fontSize);
+        const next = Math.min(28, Math.max(10, current + delta));
+        editor.style.fontSize = next + "px";
+        try {
+          localStorage.setItem(FONT_KEY, String(next));
+        } catch (_) {}
+        syncLineMetrics();
+      }
+
+      function applyWrap(enabled) {
+        editor.style.whiteSpace = enabled ? "pre-wrap" : "pre";
+        wrapToggle.setAttribute("aria-pressed", String(enabled));
+        try {
+          localStorage.setItem(WRAP_KEY, String(enabled));
+        } catch (_) {}
+      }
+
+      function applyLineNumbers(enabled) {
+        lineNumbers.style.display = enabled ? "" : "none";
+        lineNumToggle.setAttribute("aria-pressed", String(enabled));
+        try {
+          localStorage.setItem(LNUM_KEY, String(enabled));
+        } catch (_) {}
+      }
+
+      function applyScale(scale) {
+        const scaleWrap = document.getElementById("previewScale");
+        if (scaleWrap) {
+          scaleWrap.style.transform = `scale(${scale})`;
+          // when scaling down, expand width so content doesn't clip; when up, allow scroll
+          scaleWrap.style.width =
+            scale >= 1 ? `${100 / scale}%` : `${100 / scale}%`;
+          scaleWrap.style.height = "100%";
+        }
+        zoomSelect.value = String(scale);
+        try {
+          localStorage.setItem(SCALE_KEY, String(scale));
+        } catch (_) {}
+      }
+
+      function showToast(msg) {
+        if (!toast) return;
+        toast.textContent = msg;
+        toast.classList.add("show");
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => toast.classList.remove("show"), 1600);
+      }
+
+      function indentOutdent(outdent = false) {
+        const s = editor.selectionStart;
+        const e = editor.selectionEnd;
+        const val = editor.value;
+        const lineStart = val.lastIndexOf("\n", s - 1) + 1;
+        const lineEnd =
+          val.indexOf("\n", e) === -1 ? val.length : val.indexOf("\n", e);
+        const before = val.slice(0, lineStart);
+        const block = val.slice(lineStart, lineEnd);
+        const after = val.slice(lineEnd);
+        let newBlock,
+          delta = 0;
+        if (outdent) {
+          newBlock = block.replace(/^(\t| {2,4})/gm, (m) => {
+            delta -= m.length;
+            return "";
+          });
+        } else {
+          newBlock = block.replace(/^/gm, () => {
+            delta += 2;
+            return "  ";
+          });
+        }
+        editor.value = before + newBlock + after;
+        editor.selectionStart = Math.max(lineStart, s + (outdent ? delta : 2));
+        editor.selectionEnd = Math.min(
+          editor.value.length,
+          e + (outdent ? delta : 2)
+        );
+        updateLineNumbers();
+        updateCounts();
+        saveToLocal();
+        debouncedUpdatePreview();
+      }
+
+      // Initialize editor
+      function initEditor() {
+        // Load from localStorage if available
+        try {
+          const saved = localStorage.getItem(STORAGE_KEY);
+          if (saved && typeof saved === "string" && saved.trim().length) {
+            editor.value = saved;
+          }
+          const theme = localStorage.getItem(THEME_KEY);
+          if (theme === "dark") {
+            body.classList.add("dark-mode");
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+          }
+          const wrap = localStorage.getItem(WRAP_KEY);
+          if (wrap !== null) applyWrap(wrap === "true");
+          const lnums = localStorage.getItem(LNUM_KEY);
+          if (lnums !== null) applyLineNumbers(lnums === "true");
+          const fsize = localStorage.getItem(FONT_KEY);
+          if (fsize) editor.style.fontSize = `${parseFloat(fsize)}px`;
+          const scale = localStorage.getItem(SCALE_KEY);
+          if (scale) applyScale(parseFloat(scale));
+          const split = localStorage.getItem(SPLIT_KEY);
+          if (split) {
+            const parts = split.split(",");
+            if (parts.length === 2) {
+              document.querySelector(".editor-container").style.flexBasis =
+                parts[0];
+              document.querySelector(".preview-container").style.flexBasis =
+                parts[1];
             }
-            lineNumbers.innerHTML = lineNumbersHTML;
+          }
+          const autorun = localStorage.getItem(AUTORUN_KEY);
+          if (autorun !== null) {
+            autoRun = autorun === "true";
+            autoRunToggle.setAttribute("aria-pressed", String(autoRun));
+          }
+          const collapsed = localStorage.getItem(COLLAPSE_KEY);
+          if (collapsed === "editor")
+            document.body.classList.add("editor-collapsed");
+          if (collapsed === "preview")
+            document.body.classList.add("preview-collapsed");
+        } catch (_) {}
+
+        updateLineNumbers();
+        syncLineMetrics();
+        updateCounts();
+        updatePreview();
+
+        // Set up event listeners
+        editor.addEventListener("input", () => {
+          updateLineNumbers();
+          syncLineMetrics();
+          updateCounts();
+          debouncedUpdatePreview();
+          saveToLocal();
+        });
+
+        editor.addEventListener("scroll", () => {
+          lineNumbers.scrollTop = editor.scrollTop;
+        });
+
+        editor.addEventListener("keyup", () => {
+          updateCounts();
+        });
+
+        editor.addEventListener("click", () => {
+          updateCounts();
+        });
+
+        runBtn.addEventListener("click", updatePreview);
+
+        resetBtn.addEventListener("click", () => {
+          if (!confirm("Reset editor to default template?")) return;
+          editor.value = defaultTemplate;
+          updateLineNumbers();
+          updateCounts();
+          updatePreview();
+          try {
+            localStorage.removeItem(STORAGE_KEY);
+          } catch (_) {}
+          showToast("Editor reset");
+        });
+
+        downloadBtn.addEventListener("click", downloadHTML);
+
+        themeToggle.addEventListener("click", () => {
+          body.classList.toggle("dark-mode");
+          if (body.classList.contains("dark-mode")) {
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            try {
+              localStorage.setItem(THEME_KEY, "dark");
+            } catch (_) {}
+          } else {
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            try {
+              localStorage.setItem(THEME_KEY, "light");
+            } catch (_) {}
+          }
+        });
+
+        // More dropdown
+        const closeMenu = () => {
+          moreMenu.classList.add('hidden');
+          moreBtn.setAttribute('aria-expanded', 'false');
+        };
+        const toggleMenu = () => {
+          const open = moreMenu.classList.toggle('hidden');
+          moreBtn.setAttribute('aria-expanded', String(!open));
+        };
+        moreBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleMenu();
+        });
+        moreMenu.addEventListener('click', (e) => {
+          e.stopPropagation();
+        });
+        document.addEventListener('click', (e) => {
+          if (!moreMenu.classList.contains('hidden')) closeMenu();
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') closeMenu();
+        });
+
+        refreshPreview.addEventListener("click", updatePreview);
+
+        fullscreenPreview.addEventListener("click", () => {
+          if (preview.requestFullscreen) {
+            preview.requestFullscreen();
+          } else if (preview.webkitRequestFullscreen) {
+            preview.webkitRequestFullscreen();
+          } else if (preview.msRequestFullscreen) {
+            preview.msRequestFullscreen();
+          }
+        });
+
+        // Toolbar actions
+        toolbar.addEventListener("click", (e) => {
+          const btn = e.target.closest("button[data-cmd]");
+          if (!btn) return;
+          handleToolbar(btn.dataset.cmd);
+        });
+
+        // Handle auto-resizing of editor
+        function resizeEditor() {
+          const container = document.querySelector(".container");
+          if (window.innerWidth <= 768) {
+            container.style.flexDirection = "column";
+          } else {
+            container.style.flexDirection = "row";
+          }
+          syncLineMetrics();
         }
 
-        // Update preview
-        function updatePreview() {
-            const html = editor.value;
-            preview.srcdoc = html;
-            memoryStatus.textContent = 'Running';
-            setTimeout(() => {
-                memoryStatus.textContent = 'Ready';
-            }, 500);
-        }
+        window.addEventListener("resize", resizeEditor);
+        resizeEditor();
 
-        // Initialize editor
-        function initEditor() {
-            updateLineNumbers();
+        // Keyboard shortcuts
+        window.addEventListener("keydown", (e) => {
+          if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+            e.preventDefault();
+            downloadHTML();
+          }
+          if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+            e.preventDefault();
             updatePreview();
-            
-            // Set up event listeners
-            editor.addEventListener('input', () => {
-                updateLineNumbers();
-                updatePreview();
-            });
-            
-            editor.addEventListener('scroll', () => {
-                lineNumbers.scrollTop = editor.scrollTop;
-            });
-            
-            runBtn.addEventListener('click', updatePreview);
-            
-            resetBtn.addEventListener('click', () => {
-                editor.value = defaultTemplate;
-                updateLineNumbers();
-                updatePreview();
-            });
-            
-            themeToggle.addEventListener('click', () => {
-                body.classList.toggle('dark-mode');
-                if (body.classList.contains('dark-mode')) {
-                    themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
-                } else {
-                    themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
-                }
-            });
-            
-            refreshPreview.addEventListener('click', updatePreview);
-            
-            fullscreenPreview.addEventListener('click', () => {
-                if (preview.requestFullscreen) {
-                    preview.requestFullscreen();
-                } else if (preview.webkitRequestFullscreen) {
-                    preview.webkitRequestFullscreen();
-                } else if (preview.msRequestFullscreen) {
-                    preview.msRequestFullscreen();
-                }
-            });
-            
-            // Handle auto-resizing of editor
-            function resizeEditor() {
-                const container = document.querySelector('.container');
-                if (window.innerWidth <= 768) {
-                    container.style.flexDirection = 'column';
-                } else {
-                    container.style.flexDirection = 'row';
-                }
+          }
+          if (e.key === "Tab") {
+            e.preventDefault();
+            if (e.shiftKey) indentOutdent(true);
+            else indentOutdent(false);
+          }
+          if ((e.ctrlKey || e.metaKey) && (e.key === "+" || e.key === "=")) {
+            e.preventDefault();
+            setFontSize(1);
+          }
+          if ((e.ctrlKey || e.metaKey) && e.key === "-") {
+            e.preventDefault();
+            setFontSize(-1);
+          }
+          if (e.key === "Escape") {
+            if (!helpOverlay.classList.contains("hidden")) {
+              helpOverlay.classList.add("hidden");
             }
-            
-            window.addEventListener('resize', resizeEditor);
-            resizeEditor();
-        }
+            if (!moreMenu.classList.contains('hidden')) {
+              closeMenu();
+            }
+          }
+        });
 
-        // Initialize the editor when the page loads
-        window.addEventListener('DOMContentLoaded', initEditor);
+        // Draggable divider (horizontal on mobile)
+        let isDragging = false;
+        divider.addEventListener("mousedown", (e) => {
+          isDragging = true;
+          document.body.classList.add("dragging");
+        });
+        window.addEventListener("mouseup", () => {
+          isDragging = false;
+          document.body.classList.remove("dragging");
+        });
+        window.addEventListener("mousemove", (e) => {
+          if (!isDragging) return;
+          const container = document.querySelector(".container");
+          const rect = container.getBoundingClientRect();
+          if (window.innerWidth > 768) {
+            const percent = Math.min(
+              80,
+              Math.max(20, ((e.clientX - rect.left) / rect.width) * 100)
+            );
+            document.querySelector(".editor-container").style.flexBasis =
+              percent + "%";
+            document.querySelector(".preview-container").style.flexBasis =
+              100 - percent + "%";
+            try {
+              localStorage.setItem(SPLIT_KEY, `${percent}%,${100 - percent}%`);
+            } catch (_) {}
+          } else {
+            const percent = Math.min(
+              80,
+              Math.max(20, ((e.clientY - rect.top) / rect.height) * 100)
+            );
+            document.querySelector(".editor-container").style.height =
+              percent + "%";
+            document.querySelector(".preview-container").style.height =
+              100 - percent + "%";
+          }
+        });
+
+        // Font size controls
+        fontInc.addEventListener("click", () => setFontSize(1));
+        fontDec.addEventListener("click", () => setFontSize(-1));
+
+        // Wrap toggle
+        wrapToggle.addEventListener("click", () => {
+          const pressed = wrapToggle.getAttribute("aria-pressed") === "true";
+          applyWrap(!pressed);
+        });
+
+        // Line numbers toggle
+        lineNumToggle.addEventListener("click", () => {
+          const pressed = lineNumToggle.getAttribute("aria-pressed") === "true";
+          applyLineNumbers(!pressed);
+        });
+
+        // Zoom select
+        zoomSelect.addEventListener("change", (e) => {
+          applyScale(parseFloat(e.target.value));
+        });
+
+        // Auto-run toggle
+        autoRunToggle.addEventListener("click", () => {
+          autoRun = !autoRun;
+          autoRunToggle.setAttribute("aria-pressed", String(autoRun));
+          try {
+            localStorage.setItem(AUTORUN_KEY, String(autoRun));
+          } catch (_) {}
+          showToast(`Auto-run ${autoRun ? "enabled" : "disabled"}`);
+        });
+
+        // Upload/Choose file handlers
+        uploadBtn.addEventListener("click", () => fileInput.click());
+        fileInput.addEventListener("change", (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = () => {
+            editor.value = String(reader.result || "");
+            updateLineNumbers();
+            updateCounts();
+            updatePreview();
+            saveToLocal();
+            showToast(`Loaded ${file.name}`);
+          };
+          reader.readAsText(file);
+        });
+
+        // Drag and drop into editor
+        ["dragenter", "dragover"].forEach((ev) =>
+          editor.addEventListener(ev, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            editor.style.outline = "2px dashed #3498db";
+          })
+        );
+        ["dragleave", "drop"].forEach((ev) =>
+          editor.addEventListener(ev, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            editor.style.outline = "none";
+            if (ev === "drop") {
+              const dt = e.dataTransfer;
+              if (!dt || !dt.files || !dt.files[0]) return;
+              const file = dt.files[0];
+              const reader = new FileReader();
+              reader.onload = () => {
+                editor.value = String(reader.result || "");
+                updateLineNumbers();
+                updateCounts();
+                updatePreview();
+                saveToLocal();
+                showToast(`Loaded ${file.name}`);
+              };
+              reader.readAsText(file);
+            }
+          })
+        );
+
+        // Copy to clipboard
+        copyBtn.addEventListener("click", async () => {
+          try {
+            if (navigator.clipboard?.writeText) {
+              await navigator.clipboard.writeText(editor.value);
+            } else {
+              const ta = document.createElement("textarea");
+              ta.value = editor.value;
+              document.body.appendChild(ta);
+              ta.select();
+              document.execCommand("copy");
+              document.body.removeChild(ta);
+            }
+            showToast("Copied HTML to clipboard");
+          } catch (_) {
+            showToast("Copy failed");
+          }
+        });
+
+        // Center split (shared)
+        const doCenterSplit = () => {
+          const editorPane = document.querySelector(".editor-container");
+          const previewPane = document.querySelector(".preview-container");
+          // Uncollapse any collapsed state
+          document.body.classList.remove(
+            "editor-collapsed",
+            "preview-collapsed"
+          );
+          try {
+            localStorage.setItem(COLLAPSE_KEY, "");
+          } catch (_) {}
+
+          // Clear previous inline sizes that might conflict
+          editorPane.style.width = "";
+          previewPane.style.width = "";
+          editorPane.style.height = "";
+          previewPane.style.height = "";
+          editorPane.style.flexBasis = "";
+          previewPane.style.flexBasis = "";
+
+          if (window.innerWidth > 768) {
+            // Desktop: horizontal split using flex-basis
+            editorPane.style.flexBasis = "50%";
+            previewPane.style.flexBasis = "50%";
+            try {
+              localStorage.setItem(SPLIT_KEY, "50%,50%");
+            } catch (_) {}
+          } else {
+            // Mobile: vertical split using heights
+            editorPane.style.height = "50%";
+            previewPane.style.height = "50%";
+          }
+          showToast("Split centered");
+        };
+        centerSplit.addEventListener("click", doCenterSplit);
+        if (centerSplitEditor)
+          centerSplitEditor.addEventListener("click", doCenterSplit);
+
+        // Collapse/expand panels
+        const setCollapsed = (mode) => {
+          document.body.classList.remove(
+            "editor-collapsed",
+            "preview-collapsed"
+          );
+          if (mode) document.body.classList.add(`${mode}-collapsed`);
+          try {
+            localStorage.setItem(COLLAPSE_KEY, mode || "");
+          } catch (_) {}
+        };
+        collapseEditor.addEventListener("click", () => setCollapsed("editor"));
+        collapsePreview.addEventListener("click", () =>
+          setCollapsed("preview")
+        );
+        // Double-click status bar to restore
+        document
+          .querySelector(".status-bar")
+          .addEventListener("dblclick", () => setCollapsed(""));
+
+        // Help modal
+        const openHelp = () => {
+          helpOverlay.classList.remove("hidden");
+        };
+        const closeHelp = () => {
+          helpOverlay.classList.add("hidden");
+        };
+        helpBtn.addEventListener("click", openHelp);
+        helpClose.addEventListener("click", closeHelp);
+        helpOverlay.addEventListener("click", (e) => {
+          if (e.target === helpOverlay) closeHelp();
+        });
+      }
+
+      // Initialize the editor when the page loads
+      window.addEventListener("DOMContentLoaded", initEditor);
     </script>
-</body>
+  </body>
 </html>
